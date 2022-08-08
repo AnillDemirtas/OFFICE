@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+
+
+
+<div class="form-control mb-3 mt-3 container">
+    <h4 class="mb-3">Yeni Müşteri</h4>
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="firma_adi" placeholder="Firma" aria-label="Firma" aria-describedby="basic-addon1">
+    </div>
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="yetkili" placeholder="Yetkili" aria-label="Yetkili" aria-describedby="basic-addon5">
+    </div>
+
+    <div class="input-group mb-3">
+        <input class="form-control" type="text" id="gsm" name="gsm" placeholder="(555) 555-5555" />
+    </div>
+
+    <div class="input-group mb-3">
+        <select class="form-select" placeholder="İl" aria-label="İl">
+            <option selected>İl</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+    <div class="input-group mb-3">
+        <select class="form-select" placeholder="İlçe" aria-label="İlçe">
+            <option selected>İlçe</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+
+
+    <button type="button" class="btn btn-success" onclick="kayit()">Kaydet</button>
+</div>
+
+
+<script>
+    function kayit() {
+        $.ajax({
+            url: '/Firma/Kayit',
+            data: JSON.stringify({
+                Firma: {
+                    firma: $('#firma_adi').val(),
+                    yetkili: $('#yetkili').val(),
+                }
+            }),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.success == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı',
+                        text: data.message,
+                    })
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hatalı',
+                        text: data.message,
+                    })
+                }
+               
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+</script>
+
+<script>
+    document.getElementById('gsm').addEventListener('input', function (e) {
+        var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ')' + x[2] + (x[3] ? '-' + x[3] : '');
+
+    });
+</script>
