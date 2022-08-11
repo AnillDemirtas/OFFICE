@@ -28,7 +28,7 @@ namespace OFFICE.Controllers.Firma
                 Models.Firma bos_firma = new Models.Firma();
                 return View(bos_firma);
             }
-          
+
 
 
         }
@@ -51,6 +51,16 @@ namespace OFFICE.Controllers.Firma
             {
                 return Json(new { success = true });
             }
+
+        }
+
+        [HttpPost]
+        public ActionResult AjaxFirmaListesi()
+        {
+
+            var gelen_deger = _dapperService.Firmalar();
+            return Json(new { success = true, data = gelen_deger });
+
 
         }
 

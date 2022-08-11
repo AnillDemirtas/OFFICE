@@ -1,0 +1,59 @@
+﻿
+@{
+    ViewBag.Title = "YeniGorev";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+
+<div class="form-control mb-3 mt-3 container">
+    <h4 class="mb-3 text-center">Yeni Görev Tanımı</h4>
+
+    <div class="input-group mb-3">
+        <input class="form-control" list="firma_list" id="firma_list_id" placeholder="Firma seç">
+        <datalist id="firma_list">
+
+            @foreach (var firmalar in Model.firma_model)
+            {
+                <option value=@firmalar.unvan></option>
+            }
+
+        </datalist>
+    </div>
+
+
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" id="yetkili" placeholder="Konu" aria-label="Konu" aria-describedby="basic-addon5">
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Açıklama" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Açıklama</label>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <input class="form-control" list="user_list" id="user_list_id" placeholder="Personel seç">
+        <datalist id="user_list">
+
+            @foreach (var user in Model.user_model)
+            {
+                <option value=@user.ad></option>
+            }
+
+        </datalist>
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <label class="form-check-label" for="inlineRadio1">Normal</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+            <label class="form-check-label" for="inlineRadio2">Acil</label>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success" onclick="kayit()">Kaydet</button>
+</div>

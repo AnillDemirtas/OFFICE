@@ -81,6 +81,26 @@ namespace OFFICE.Service
                 sqlClose();
             }
         }
+        public List<Users> users()
+        {
+            try
+            {
+
+                sqlOpen();
+                List<Users> sinifList = conn.Query<Users>("select ad from users").ToList();
+                return sinifList;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Dapper Error:" + ex.Message);
+
+            }
+            finally
+            {
+                sqlClose();
+            }
+        }
         public List<Firma> Firma(string firma_id)
         {
             try

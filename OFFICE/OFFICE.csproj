@@ -141,12 +141,15 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AnaSayfa\AnaSayfaController.cs" />
     <Compile Include="Controllers\Firma\FirmaController.cs" />
+    <Compile Include="Controllers\Gorevler\GorevlerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DonusDegerleri.cs" />
     <Compile Include="Models\Firma.cs" />
+    <Compile Include="Models\Gorevler.cs" />
     <Compile Include="Models\JsonService.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\DapperService.cs" />
   </ItemGroup>
@@ -157,6 +160,8 @@
     <Content Include="Views\AnaSayfa\Index.cshtml" />
     <Content Include="Views\Firma\Index.cshtml" />
     <Content Include="Views\Firma\Firmalar.cshtml" />
+    <Content Include="Views\Gorevler\Index.cshtml" />
+    <Content Include="Views\Gorevler\YeniGorev.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
