@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Index";
     Layout = "~/Views/_Layout.cshtml";
 }
@@ -8,17 +7,19 @@
 
 
 <div class="form-control mb-3 mt-3 container">
-    <h4 class="mb-3">Yeni Müşteri</h4>
+    <h4 class="mb-3 text-center">@ViewBag.crud</h4>
     <div class="input-group mb-3">
-        <input type="text" class="form-control" id="firma_adi" placeholder="Firma" aria-label="Firma" aria-describedby="basic-addon1">
+
+        <input type="text" class="form-control" id="firma_adi" value="@Model.unvan" placeholder="Firma" aria-label="Firma" aria-describedby="basic-addon1">
+        <input type="text" class="form-control" id="id" value="@Model.id" hidden>
     </div>
 
     <div class="input-group mb-3">
-        <input type="text" class="form-control" id="yetkili" placeholder="Yetkili" aria-label="Yetkili" aria-describedby="basic-addon5">
+        <input type="text" class="form-control" id="yetkili" value="@Model.yetkili" placeholder="Yetkili" aria-label="Yetkili" aria-describedby="basic-addon5">
     </div>
 
     <div class="input-group mb-3">
-        <input class="form-control" type="text" id="gsm" name="gsm" placeholder="(555) 555-5555" />
+        <input class="form-control" type="text" id="gsm" name="gsm" value="@Model.gsm" placeholder="(555) 555-5555" />
     </div>
 
     <div class="input-group mb-3">
@@ -49,8 +50,10 @@
             url: '/Firma/Kayit',
             data: JSON.stringify({
                 Firma: {
-                    firma: $('#firma_adi').val(),
+                    unvan: $('#firma_adi').val(),
                     yetkili: $('#yetkili').val(),
+                    gsm: $('#gsm').val(),
+                    id: $('#id').val(),
                 }
             }),
             type: 'POST',
@@ -70,7 +73,7 @@
                         text: data.message,
                     })
                 }
-               
+
             },
             error: function () {
                 alert("error");
@@ -83,6 +86,5 @@
     document.getElementById('gsm').addEventListener('input', function (e) {
         var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
         e.target.value = !x[2] ? x[1] : '(' + x[1] + ')' + x[2] + (x[3] ? '-' + x[3] : '');
-
     });
 </script>

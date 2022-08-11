@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewBag.Title = "Firmalar";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+
+<h2 class="mb-3 text-center">Firmalar</h2>
+<table class="table table-sm" id="myTable">
+    <thead>
+        <tr>
+            <th class="text-center">Firma</th>
+            <th class="text-center">Yetkili</th>
+            <th class="text-center">Gsm</th>
+            <th class="text-center">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var firmalar in Model)
+        {
+            <tr>
+                <td class="text-center">@firmalar.unvan</td>
+                <td class="text-center">@firmalar.yetkili</td>
+                <td class="text-center">@firmalar.gsm</td>
+                <td class="text-center">
+                    <a type="button" class="btn btn-sm btn-primary" href="@Url.Action("Index","Firma",new {id = firmalar.id})">Düzenle</a>
+                    <a class="text-center"><a type="button" class="btn btn-sm btn-danger" href="@Url.Action("Index","Firma",new {id = firmalar.id})">Sil</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#myTable').DataTable({
+            responsive: true,
+            paging: false,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            },
+        })
+    });
+</script>

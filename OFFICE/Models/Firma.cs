@@ -1,10 +1,13 @@
-﻿namespace OFFICE.Models
+﻿using System;
+
+namespace OFFICE.Models
 {
     public class Firma
     {
-
-        public string firma { get; set; }
+        public string id { get; set; }
+        public string unvan { get; set; }
         public string yetkili { get; set; }
+        public string gsm { get; set; } 
 
 
     }
