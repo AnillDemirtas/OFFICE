@@ -7,7 +7,7 @@ namespace OFFICE.Models
     {
 
         public List<Firma> firma_model { get; set; }
-        public List<Users> user_model { get; set; }
+        public List<Kullanici> kullanici_model { get; set; }
 
     }
 

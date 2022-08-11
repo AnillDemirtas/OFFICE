@@ -149,7 +149,7 @@
     <Compile Include="Models\Firma.cs" />
     <Compile Include="Models\Gorevler.cs" />
     <Compile Include="Models\JsonService.cs" />
-    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Kullanici.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\DapperService.cs" />
   </ItemGroup>

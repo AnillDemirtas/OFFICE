@@ -34,7 +34,7 @@ namespace OFFICE.Service
                     id = firma_id,
                 };
                 sqlOpen();
-                if (firma_id == null || firma_id == "")
+                if (firma_id == null || firma_id == "" || firma_id == "00000000-0000-0000-0000-000000000000")
                 {
                     // kaydet
                     var gelen_id = conn.ExecuteScalar<object>("insert into firmalar  (unvan,yetkili,gsm) values (@unvan,@yetkili,@gsm) RETURNING id", parameters);
@@ -123,13 +123,13 @@ namespace OFFICE.Service
                 sqlClose();
             }
         }
-        public List<Users> users()
+        public List<Kullanici> kullanicilar()
         {
             try
             {
 
                 sqlOpen();
-                List<Users> sinifList = conn.Query<Users>("select id::text,concat(ad,' ',soyad) as adsoyad from users").ToList();
+                List<Kullanici> sinifList = conn.Query<Kullanici>("select id,concat(ad,' ',soyad) as adsoyad from kullanicilar").ToList();
                 return sinifList;
             }
             catch (Exception ex)

@@ -35,7 +35,7 @@
         <input class="form-control" list="user_list" id="user_list_id" placeholder="Personel seç">
         <datalist id="user_list">
 
-            @foreach (var user in Model.user_model)
+            @foreach (var user in Model.kullanici_model)
             {
                 <option id=@user.id value="@user.adsoyad"></option>
             }

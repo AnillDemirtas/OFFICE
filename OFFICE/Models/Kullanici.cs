@@ -1,9 +1,11 @@
-﻿namespace OFFICE.Models
+﻿using System;
+
+namespace OFFICE.Models
 {
-    public class Users
+    public class Kullanici
     {
 
-        public string id { get; set; }
+        public Guid id { get; set; }
         public string ad { get; set; }
         public string soyad { get; set; }
         public string adsoyad { get; set; }

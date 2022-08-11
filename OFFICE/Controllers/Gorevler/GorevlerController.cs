@@ -21,7 +21,7 @@ namespace OFFICE.Controllers.Gorevler
             ViewBag.crud = "Yeni Görev Tanımı";
             Models.Gorevler gorevler = new Models.Gorevler();
             gorevler.firma_model = _dapperService.Firmalar();
-            gorevler.user_model = _dapperService.users();
+            gorevler.kullanici_model = _dapperService.kullanicilar();
             return View(gorevler);
         }
         [HttpPost]
