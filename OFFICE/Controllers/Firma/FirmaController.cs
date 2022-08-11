@@ -42,7 +42,7 @@ namespace OFFICE.Controllers.Firma
         public ActionResult Kayit(Models.Firma firma)
         {
 
-            var gelen_deger = _dapperService.musteri_crud(firma, firma.id);
+            var gelen_deger = _dapperService.musteri_crud(firma, firma.id.ToString());
             if (firma.unvan == null || firma.unvan == "")
             {
                 return Json(new JsonService { success = false, message = "firma boş olamaz" });

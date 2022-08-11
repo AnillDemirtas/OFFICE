@@ -6,7 +6,7 @@
 
 
 <div class="form-control mb-3 mt-3 container">
-    <h4 class="mb-3 text-center">Yeni Görev Tanımı</h4>
+    <h4 class="mb-3 text-center">@ViewBag.crud</h4>
 
     <div class="input-group mb-3">
         <input class="form-control" list="firma_list" id="firma_list_id" placeholder="Firma seç">
@@ -14,20 +14,19 @@
 
             @foreach (var firmalar in Model.firma_model)
             {
-                <option value=@firmalar.unvan></option>
+                <option id=@firmalar.id value="@firmalar.unvan"></option>
             }
 
         </datalist>
     </div>
 
-
     <div class="input-group mb-3">
-        <input type="text" class="form-control" id="yetkili" placeholder="Konu" aria-label="Konu" aria-describedby="basic-addon5">
+        <input type="text" class="form-control" id="konutxt" placeholder="Konu" aria-label="Konu" aria-describedby="basic-addon5">
     </div>
 
     <div class="input-group mb-3">
         <div class="form-floating">
-            <textarea class="form-control" placeholder="Açıklama" id="floatingTextarea2" style="height: 100px"></textarea>
+            <textarea class="form-control" placeholder="Açıklama" id="aciklamatxt" style="height: 100px"></textarea>
             <label for="floatingTextarea2">Açıklama</label>
         </div>
     </div>
@@ -38,7 +37,7 @@
 
             @foreach (var user in Model.user_model)
             {
-                <option value=@user.ad></option>
+                <option id=@user.id value="@user.adsoyad"></option>
             }
 
         </datalist>
@@ -46,14 +45,56 @@
 
     <div class="input-group mb-3">
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+            <input class="form-check-input" checked="checked" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="false">
             <label class="form-check-label" for="inlineRadio1">Normal</label>
         </div>
         <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="true">
             <label class="form-check-label" for="inlineRadio2">Acil</label>
         </div>
     </div>
 
     <button type="button" class="btn btn-success" onclick="kayit()">Kaydet</button>
 </div>
+
+<script>
+    function kayit() {
+        var firma_id = $("#firma_list option[value='" + $('#firma_list_id').val() + "']").attr('id');
+        var user_id = $("#user_list option[value='" + $('#user_list_id').val() + "']").attr('id');
+        $.ajax({
+            url: '/Gorevler/Kayit',
+            data: JSON.stringify({
+                gorev: {
+                    firma_id: firma_id,
+                    user_id: user_id,
+                    konu: $('#konutxt').val(),
+                    aciklama: $('#aciklamatxt').val(),
+                    aciliyet_durumu: $("input:checked").val(),
+                }
+            }),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.success == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı',
+                        text: data.message,
+                    })
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hatalı',
+                        text: data.message,
+                    })
+                }
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
+</script>

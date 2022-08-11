@@ -1,8 +1,5 @@
-﻿using OFFICE.Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using OFFICE.Models;
+using OFFICE.Service;
 using System.Web.Mvc;
 
 namespace OFFICE.Controllers.Gorevler
@@ -21,11 +18,35 @@ namespace OFFICE.Controllers.Gorevler
         }
         public ActionResult YeniGorev()
         {
-            Models.Gorevler ff = new Models.Gorevler();
-            ff.firma_model = _dapperService.Firmalar();
-            ff.user_model = _dapperService.users();
+            ViewBag.crud = "Yeni Görev Tanımı";
+            Models.Gorevler gorevler = new Models.Gorevler();
+            gorevler.firma_model = _dapperService.Firmalar();
+            gorevler.user_model = _dapperService.users();
+            return View(gorevler);
+        }
+        [HttpPost]
+        public ActionResult Kayit(Models.GorevKayit gorev)
+        {
 
-            return View(ff);
+
+            if (gorev.firma_id == null || gorev.firma_id.ToString() == "" || gorev.firma_id.ToString() == "00000000-0000-0000-0000-000000000000")
+            {
+                return Json(new JsonService { success = false, message = "firma boş olamaz" });
+            }
+            else if (gorev.konu == null || gorev.konu == "")
+            {
+                return Json(new JsonService { success = false, message = "Konu boş olamaz" });
+            }
+            else if (gorev.user_id == null || gorev.user_id == "")
+            {
+                return Json(new JsonService { success = false, message = "Personel boş olamaz" });
+            }
+            else
+            {
+                var gelen_deger = _dapperService.gorev_crud(gorev, gorev.id);
+                return Json(new { success = true });
+            }
+
         }
     }
 }

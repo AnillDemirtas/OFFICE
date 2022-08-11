@@ -61,13 +61,55 @@ namespace OFFICE.Service
                 sqlClose();
             }
         }
+        public string gorev_crud(Models.GorevKayit bilgiler, string gorev_id)
+        {
+
+            try
+            {
+
+                var parameters = new
+                {
+                    firma_id = bilgiler.firma_id,
+                    user_id = bilgiler.user_id,
+                    konu = bilgiler.konu,
+                    aciklama = bilgiler.aciklama,
+                    aciliyet_durumu = bilgiler.aciliyet_durumu,
+                };
+                sqlOpen();
+                if (gorev_id == null || gorev_id == "")
+                {
+                    // kaydet
+                    var gelen_id = conn.ExecuteScalar<object>("insert into gorevler  (firma_id,konu,aciklama,aciliyet_durumu) values (@firma_id,@konu,@aciklama,@aciliyet_durumu) RETURNING id", parameters);
+                    return gelen_id.ToString();
+                }
+                else
+                {
+                    //guncelle
+                    var gelen_id = conn.ExecuteScalar<object>("update gorevler set firma_id=@firma_id,konu=@konu,aciklama=@aciklama,aciliyet_durumu=@aciliyet_durumu where id=uuid(@id) RETURNING id", parameters);
+                    return gelen_id.ToString();
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Dapper Error:" + ex.Message);
+
+            }
+            finally
+            {
+                sqlClose();
+            }
+        }
         public List<Firma> Firmalar()
         {
             try
             {
 
                 sqlOpen();
-                List<Firma> sinifList = conn.Query<Firma>("select id::text as id, unvan,yetkili,gsm from firmalar").ToList();
+                List<Firma> sinifList = conn.Query<Firma>("select id, unvan,yetkili,gsm from firmalar").ToList();
                 return sinifList;
             }
             catch (Exception ex)
@@ -87,7 +129,7 @@ namespace OFFICE.Service
             {
 
                 sqlOpen();
-                List<Users> sinifList = conn.Query<Users>("select ad from users").ToList();
+                List<Users> sinifList = conn.Query<Users>("select id::text,concat(ad,' ',soyad) as adsoyad from users").ToList();
                 return sinifList;
             }
             catch (Exception ex)
@@ -110,8 +152,8 @@ namespace OFFICE.Service
                     id = firma_id,
                 };
                 sqlOpen();
-                List<Firma> sinifList = conn.Query<Firma>("select id::text as id, unvan,yetkili,gsm from firmalar where id=uuid(@id)", parameters).ToList();
-            
+                List<Firma> sinifList = conn.Query<Firma>("select id, unvan,yetkili,gsm from firmalar where id=uuid(@id)", parameters).ToList();
+
                 return sinifList;
             }
             catch (Exception ex)
