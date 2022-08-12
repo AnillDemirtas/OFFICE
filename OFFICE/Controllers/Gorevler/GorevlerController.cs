@@ -25,10 +25,17 @@ namespace OFFICE.Controllers.Gorevler
             gorevler.kullanici_model = _dapperService.kullanicilar();
             return View(gorevler);
         }
-        public ActionResult HareketDetay(string hareket_id,string gorev_id)
+        [HttpPost]
+        public ActionResult HareketSil(string hareket_id)
         {
 
-         
+            _dapperService.gorev_hareketi_sil(hareket_id);
+            return Json(new { success = true });
+        }
+        public ActionResult HareketDetay(string hareket_id, string gorev_id)
+        {
+
+
             var hareketler = _dapperService.gorev_hareket_detay(hareket_id);
             if (hareketler.Count != 0)
             {
@@ -39,21 +46,35 @@ namespace OFFICE.Controllers.Gorevler
             {
                 ViewBag.crud = "Yeni Not";
                 Models.Hareketler bos_firma = new Models.Hareketler();
-                bos_firma.gorev_id = new Guid(gorev_id);
+                if (gorev_id != null)
+                {
+                    bos_firma.gorev_id = new Guid(gorev_id);
+                }
+
                 return View(bos_firma);
             }
-           
+
         }
         public ActionResult GorevDetaylari(string gorev_id)
         {
             var detaylar = _dapperService.gorev_detaylari(gorev_id);
             if (detaylar.Count > 0)
             {
+
                 ViewBag.konu = detaylar[0].konu;
                 ViewBag.aciklama = detaylar[0].konu_detay;
                 ViewBag.aciliyet_durumu = detaylar[0].aciliyet_durumu;
                 ViewBag.tarih = detaylar[0].olusturma_tarihi;
                 ViewBag.gorev_id = detaylar[0].gorev_id;
+                if (detaylar[0].hareket_id.ToString() != "00000000-0000-0000-0000-000000000000")
+                {
+                    ViewBag.kayit_goster = true;
+                }
+                else
+                {
+                    ViewBag.kayit_goster = false;
+                }
+                 
             }
             return View(detaylar);
         }

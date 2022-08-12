@@ -9,6 +9,7 @@
         <div class="card-body">
             <div class="text-end">
                 <a type="button" class="btn btn-sm btn-success" href="@Url.Action("HareketDetay","Gorevler",new {gorev_id = @ViewBag.gorev_id})">Yeni Not</a>
+                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal" data-book-id="my_id_value">aa Not</button>
                 <a type="button" class="btn btn-sm btn-danger">Sonlandır</a>
             </div>
             <h5 class="card-title text-center">@ViewBag.konu</h5>
@@ -29,24 +30,62 @@
 <div class="mb-3 mt-3 container">
     @foreach (var gorev_detaylari in Model)
     {
-
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Anıl Demirtaş</h5>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">@gorev_detaylari.aciklama</li>
-            </ul>
-            <div class="card-body">
-                <span href="#" class="card-text">@gorev_detaylari.olusturma_tarihi</span>
-                <div class="text-end">
-                    <a type="button" class="btn btn-sm btn-primary" href="@Url.Action("HareketDetay","Gorevler",new {hareket_id = @gorev_detaylari.hareket_id})">Düzenle</a>
-                    <a type="button" class="btn btn-sm btn-danger">Sil</a>
+        if (ViewBag.kayit_goster == true)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Anıl Demirtaş</h5>
                 </div>
-            </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">@gorev_detaylari.aciklama</li>
+                </ul>
+                <div class="card-body">
+                    <span href="#" class="card-text">@gorev_detaylari.olusturma_tarihi</span>
+                    <div class="text-end">
+                        <a type="button" class="btn btn-sm btn-primary" href="@Url.Action("HareketDetay","Gorevler",new {hareket_id = @gorev_detaylari.hareket_id})">Düzenle</a>
+                        <a type="button" class="btn btn-sm btn-danger" onclick="sil('@gorev_detaylari.hareket_id')">Sil</a>
+                    </div>
+                </div>
 
-        </div>
-        <br />
+            </div>
+            <br />
+        }
+
     }
 
 </div>
+
+<script>
+    function sil(hareket_id) {
+        $.ajax({
+            url: '/Gorevler/HareketSil',
+            data: JSON.stringify({
+                hareket_id: hareket_id,
+            }),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.success == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı',
+                        text: data.message,
+                    })
+                    location.reload();
+                    return false;
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hatalı',
+                        text: data.message,
+                    })
+                }
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+</script>

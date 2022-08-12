@@ -205,7 +205,7 @@ namespace OFFICE.Service
                 from 
                 firmalar firma 
                 inner join gorevler gorev on firma.id = gorev.firma_id 
-                inner join gorev_hareketleri hareketler on gorev.id = hareketler.gorev_id
+                left join gorev_hareketleri hareketler on gorev.id = hareketler.gorev_id
                 where gorev.id=uuid(@id)", parameters).ToList();
                 return sinifList;
             }
@@ -287,6 +287,34 @@ namespace OFFICE.Service
                 sqlClose();
             }
         }
+
+
+        #region delete
+        public string gorev_hareketi_sil(string hareket_id)
+        {
+
+            try
+            {
+                var parameters = new
+                {
+                    id = hareket_id,
+                };
+                sqlOpen();
+                var gelen_id = conn.ExecuteScalar<object>("delete from gorev_hareketleri where id=uuid(@id) RETURNING id", parameters);
+                return gelen_id.ToString();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Dapper Error:" + ex.Message);
+
+            }
+            finally
+            {
+                sqlClose();
+            }
+        }
+        #endregion
         #endregion
         #region Connection Open/Close Method
         private void sqlClose()
