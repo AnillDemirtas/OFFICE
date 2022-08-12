@@ -9,7 +9,7 @@
     <div class="row row-cols-1 row-cols-md-4 g-4">
         <div class="col">
             <div class="card">
-                <a class="card-block stretched-link text-decoration-none"  href="@Url.Action("Firmalar", "Firma")">
+                <a class="card-block stretched-link text-decoration-none" href="@Url.Action("Firmalar", "Firma")">
                     <h4 class="card-body">Firmalar</h4>
                 </a>
             </div>
@@ -37,3 +37,54 @@
         </div>
     </div>
 </div>
+
+<hr />
+<h2 class="mb-3 text-center">Görevlerim</h2>
+<table class="table table-sm" id="gorev_tablom">
+    <thead>
+        <tr>
+            <th class="text-center">Firma</th>
+            <th class="text-center">Konu</th>
+            <th class="text-center">Açıklama</th>
+            <th class="text-center">Durum</th>
+            <th class="text-center">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var gorevlerim in Model)
+        {
+            <tr>
+                <td class="text-center">@gorevlerim.unvan</td>
+                <td class="text-center">@gorevlerim.konu</td>
+                <td class="text-center">@gorevlerim.aciklama</td>
+                @if (@gorevlerim.aciliyet_durumu == true)
+                {
+                    <td class="text-center">Acil</td>
+                }
+                else
+                {
+                    <td class="text-center">Normal</td>
+                }
+
+                <td class="text-center">
+                    <a type="button" class="btn btn-sm btn-primary" href="@Url.Action("GorevDetaylari","Gorevler",new {gorev_id = gorevlerim.id})">Detay</a>
+                    <a class="text-center"><a type="button" class="btn btn-sm btn-danger">Düzenle</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    $(document).ready(function () {
+        $('#gorev_tablom').DataTable({
+            responsive: true,
+            paging: false,
+            language: {
+                url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+            },
+        })
+    });
+</script>
+

@@ -162,6 +162,8 @@
     <Content Include="Views\Firma\Firmalar.cshtml" />
     <Content Include="Views\Gorevler\Index.cshtml" />
     <Content Include="Views\Gorevler\YeniGorev.cshtml" />
+    <Content Include="Views\Gorevler\GorevDetaylari.cshtml" />
+    <Content Include="Views\Gorevler\HareketDetay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

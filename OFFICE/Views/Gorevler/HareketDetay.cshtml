@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "HareketDetay";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+
+
+<div class="form-control mb-3 mt-3 container">
+    <h4 class="mb-3 text-center">@ViewBag.crud</h4>
+
+
+    <div class="input-group mb-3">
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Not" id="aciklamatxt" style="height: 100px">@Model.aciklama</textarea>
+            <label for="floatingTextarea2">Not</label>
+            <input type="text" class="form-control" id="id" value="@Model.id" hidden>
+            <input type="text" class="form-control" id="gorev_id" value="@Model.gorev_id" hidden>
+        </div>
+    </div>
+
+    <button type="button" class="btn btn-success" onclick="kayit()">Kaydet</button>
+</div>
+
+<script>
+    function kayit() {
+        $.ajax({
+            url: '/Gorevler/HareketKayit',
+            data: JSON.stringify({
+                hareket: {
+                    id: $('#id').val(),
+                    gorev_id: $('#gorev_id').val(),
+                    aciklama: $('#aciklamatxt').val(),
+                }
+            }),
+            type: 'POST',
+            contentType: 'application/json; charset=utf-8',
+            success: function (data) {
+                if (data.success == true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı',
+                        text: data.message,
+                    })
+                }
+                else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hatalı',
+                        text: data.message,
+                    })
+                }
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
+</script>

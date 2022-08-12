@@ -1,0 +1,52 @@
+﻿
+@{
+    ViewBag.Title = "GorevDetaylari";
+    Layout = "~/Views/_Layout.cshtml";
+}
+
+<div class="mb-3 mt-3 container">
+    <div class="card">
+        <div class="card-body">
+            <div class="text-end">
+                <a type="button" class="btn btn-sm btn-success" href="@Url.Action("HareketDetay","Gorevler",new {gorev_id = @ViewBag.gorev_id})">Yeni Not</a>
+                <a type="button" class="btn btn-sm btn-danger">Sonlandır</a>
+            </div>
+            <h5 class="card-title text-center">@ViewBag.konu</h5>
+            <p class="card-text text-center">@ViewBag.aciklama</p>
+            @if (@ViewBag.aciliyet_durumu == true)
+            {
+                <p class="card-text">Öncelik : Acil</p>
+            }
+            else
+            {
+                <p class="card-text">Normal</p>
+            }
+
+        </div>
+    </div>
+</div>
+
+<div class="mb-3 mt-3 container">
+    @foreach (var gorev_detaylari in Model)
+    {
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Anıl Demirtaş</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">@gorev_detaylari.aciklama</li>
+            </ul>
+            <div class="card-body">
+                <span href="#" class="card-text">@gorev_detaylari.olusturma_tarihi</span>
+                <div class="text-end">
+                    <a type="button" class="btn btn-sm btn-primary" href="@Url.Action("HareketDetay","Gorevler",new {hareket_id = @gorev_detaylari.hareket_id})">Düzenle</a>
+                    <a type="button" class="btn btn-sm btn-danger">Sil</a>
+                </div>
+            </div>
+
+        </div>
+        <br />
+    }
+
+</div>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OFFICE.Service;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,16 @@ namespace OFFICE.Controllers.AnaSayfa
 {
     public class AnaSayfaController : Controller
     {
+        DapperService _dapperService;
+        public AnaSayfaController()
+        {
+            _dapperService = new DapperService();
+        }
         // GET: AnaSayfa
         public ActionResult Index()
         {
-            return View();
+            var gorevlerim = _dapperService.gorevlerim();
+            return View(gorevlerim);
         }
     }
 }

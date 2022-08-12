@@ -103,13 +103,54 @@ namespace OFFICE.Service
                 sqlClose();
             }
         }
-        public List<Firma> Firmalar()
+        public string gorev_hareket_crud(Models.Hareketler bilgiler, string hareket_id)
+        {
+
+            try
+            {
+
+                var parameters = new
+                {
+                    id = hareket_id,
+                    gorev_id = bilgiler.gorev_id,
+                    aciklama = bilgiler.aciklama,
+                };
+                sqlOpen();
+                if (hareket_id == null || hareket_id == "" || hareket_id == "00000000-0000-0000-0000-000000000000")
+                {
+                    // kaydet
+                    var gelen_id = conn.ExecuteScalar<object>("insert into gorev_hareketleri (gorev_id,aciklama) values (@gorev_id,@aciklama) RETURNING id", parameters);
+                    return gelen_id.ToString();
+                }
+                else
+                {
+                    //guncelle
+                    var gelen_id = conn.ExecuteScalar<object>("update gorev_hareketleri set aciklama=@aciklama where id=uuid(@id) RETURNING id", parameters);
+                    return gelen_id.ToString();
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Dapper Error:" + ex.Message);
+
+            }
+            finally
+            {
+                sqlClose();
+            }
+        }
+
+        public List<Kullanici> kullanicilar()
         {
             try
             {
 
                 sqlOpen();
-                List<Firma> sinifList = conn.Query<Firma>("select id, unvan,yetkili,gsm from firmalar").ToList();
+                List<Kullanici> sinifList = conn.Query<Kullanici>("select id,concat(ad,' ',soyad) as adsoyad from kullanicilar").ToList();
                 return sinifList;
             }
             catch (Exception ex)
@@ -123,13 +164,92 @@ namespace OFFICE.Service
                 sqlClose();
             }
         }
-        public List<Kullanici> kullanicilar()
+        public List<Gorevlerim> gorevlerim()
         {
             try
             {
 
                 sqlOpen();
-                List<Kullanici> sinifList = conn.Query<Kullanici>("select id,concat(ad,' ',soyad) as adsoyad from kullanicilar").ToList();
+                List<Gorevlerim> sinifList = conn.Query<Gorevlerim>("select g.id,unvan,konu,aciklama,aciliyet_durumu from firmalar f  inner join gorevler g on f.id = g.firma_id ").ToList();
+                return sinifList;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Dapper Error:" + ex.Message);
+
+            }
+            finally
+            {
+                sqlClose();
+            }
+        }
+        public List<Gorevlerim> gorev_detaylari(string gorev_id)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    id = gorev_id,
+                };
+                sqlOpen();
+                List<Gorevlerim> sinifList = conn.Query<Gorevlerim>(@"select 
+                gorev.id as gorev_id, 
+                hareketler.id as hareket_id, 
+                unvan, 
+                konu,
+                gorev.aciklama as konu_detay,
+                hareketler.aciklama, 
+                aciliyet_durumu, 
+                hareketler.olusturma_tarihi 
+                from 
+                firmalar firma 
+                inner join gorevler gorev on firma.id = gorev.firma_id 
+                inner join gorev_hareketleri hareketler on gorev.id = hareketler.gorev_id
+                where gorev.id=uuid(@id)", parameters).ToList();
+                return sinifList;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Dapper Error:" + ex.Message);
+
+            }
+            finally
+            {
+                sqlClose();
+            }
+        }
+        public List<Hareketler> gorev_hareket_detay(string hareket_id)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    id = hareket_id,
+                };
+                sqlOpen();
+                List<Hareketler> sinifList = conn.Query<Hareketler>(@"select * from gorev_hareketleri where id=uuid(@id)", parameters).ToList();
+                return sinifList;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Dapper Error:" + ex.Message);
+
+            }
+            finally
+            {
+                sqlClose();
+            }
+        }
+        public List<Firma> Firmalar()
+        {
+            try
+            {
+
+                sqlOpen();
+                List<Firma> sinifList = conn.Query<Firma>("select id, unvan,yetkili,gsm from firmalar").ToList();
                 return sinifList;
             }
             catch (Exception ex)
